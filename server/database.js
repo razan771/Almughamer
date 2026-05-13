@@ -1,14 +1,29 @@
-const sqlite3 = require('sqlite3').verbose();
-const { open } = require('sqlite');
+const { DatabaseSync } = require('node:sqlite');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 
 async function getDb() {
   const dbPath = process.env.DB_PATH || path.join(__dirname, 'database.sqlite');
-  return open({
-    filename: dbPath,
-    driver: sqlite3.Database
-  });
+  const db = new DatabaseSync(dbPath);
+
+  return {
+    exec(sql) {
+      return db.exec(sql);
+    },
+    get(sql, params = []) {
+      return db.prepare(sql).get(...params);
+    },
+    all(sql, params = []) {
+      return db.prepare(sql).all(...params);
+    },
+    run(sql, params = []) {
+      const result = db.prepare(sql).run(...params);
+      return {
+        ...result,
+        lastID: result.lastInsertRowid ? Number(result.lastInsertRowid) : undefined,
+      };
+    },
+  };
 }
 
 async function initDb() {
@@ -70,6 +85,7 @@ async function initDb() {
     console.log('Seeded admin user.');
   } else {
     await db.run(`UPDATE users SET name = ?, email = ?, password_hash = ?, role = ? WHERE id = ?`, ['مدير المغامر', adminEmail, hash, 'admin', existingAdmin.id]);
+    await db.run(`DELETE FROM users WHERE email = ? AND id != ?`, [legacyAdminEmail, existingAdmin.id]);
     console.log('Updated existing admin credentials.');
   }
 

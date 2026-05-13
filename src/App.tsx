@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import { Header } from './components/Header';
 import { CartDrawer } from './components/CartDrawer';
+import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { Pharmacy } from './pages/Pharmacy';
 import { Admin } from './pages/Admin';
@@ -45,7 +46,7 @@ export function AppContent() {
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-on-surface font-body">
+    <div className="app-bg min-h-screen flex flex-col bg-background text-on-surface font-body">
       <Header cartCount={cartCount} onOpenCart={() => setIsCartOpen(true)} />
       
       <main className="flex-1">
@@ -59,6 +60,8 @@ export function AppContent() {
           <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
+
+      <Footer />
 
       <CartDrawer 
         isOpen={isCartOpen}

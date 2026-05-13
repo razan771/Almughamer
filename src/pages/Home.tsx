@@ -1,145 +1,105 @@
 import React from 'react';
-import { Button } from '../components/Button';
 import { NavLink } from 'react-router-dom';
-import { BadgeCheck, Pill, Syringe, PawPrint } from 'lucide-react';
+import { Activity, ArrowLeft, BadgeCheck, HeartPulse, Pill, ShieldCheck, Sparkles, Syringe } from 'lucide-react';
+import { Button } from '../components/Button';
 
 const features = [
-  {
-    icon: BadgeCheck,
-    title: 'وصفات موثوقة',
-    description: 'خلاصة الخبرة في وصفات طبية دقيقة وموثوقة تحت إشراف طبيب مختص',
-    glowColor: 'from-blue-500 to-cyan-500',
-    iconColor: 'text-cyan-400'
-  },
-  {
-    icon: Pill,
-    title: 'مكملات غذائية',
-    description: 'تغذية ذكية، نتائج مبهرة.. مكملات غذائية طبيعية تدعم الصحة العامة والنشاط',
-    glowColor: 'from-emerald-500 to-teal-500',
-    iconColor: 'text-emerald-400'
-  },
-  {
-    icon: Syringe,
-    title: 'علاجات بيطرية',
-    description: 'نوفر لك أفضل العلاجات البيطرية من كبرى الشركات العالمية لضمان الشفاء السريع',
-    glowColor: 'from-purple-500 to-pink-500',
-    iconColor: 'text-purple-400'
-  },
-  {
-    icon: PawPrint,
-    title: 'علاجات الهجن',
-    description: 'حلول علاجية متكاملة لضمان جهوزية الهجن لأقوى الميادين',
-    glowColor: 'from-blue-500 to-indigo-500',
-    iconColor: 'text-blue-400'
-  }
+  { icon: ShieldCheck, title: 'أدوية موثوقة', description: 'منتجات مختارة بعناية من فئات علاجية ومكملات بيطرية عالية الجودة.' },
+  { icon: HeartPulse, title: 'رعاية مستمرة', description: 'تجربة شراء واضحة تساعدك على الوصول للعلاج المناسب بسرعة وهدوء.' },
+  { icon: Syringe, title: 'حلول علاجية', description: 'تصنيفات عملية للأدوية والفيتامينات ومنتجات العناية للحيوانات.' },
+  { icon: Pill, title: 'مكملات احترافية', description: 'دعم يومي للصحة والطاقة والمناعة للحيوانات الأليفة والهجن.' },
 ];
 
-const stats = [
-  { value: '6+', label: 'أبطال السباق' },
-  { value: '500+', label: 'وصفة طبية' },
-  { value: '5+', label: 'سنوات من الخبرة' }
-];
 
 export function Home() {
   return (
-    <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="relative px-4 py-10 md:py-8 sm:px-6 lg:px-8 mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-center gap-10 md:gap-8 lg:gap-16 h-auto min-h-[calc(100vh-6rem)] w-full overflow-hidden md:overflow-visible">
-        <div className="flex-1 text-center md:text-start z-10 flex flex-col justify-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-black tracking-tight mb-6 md:mb-8 leading-[1.3] md:leading-[1.2] text-on-surface">
-            رعاية بيطرية متكاملة
-            <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-4 md:mt-6 text-gradient-primary leading-normal pb-4 font-bold">لجميع الحيوانات</span>
+    <div className="overflow-hidden">
+      <section className="relative mx-auto grid min-h-[calc(100vh-6rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(47,128,255,0.2),transparent_28rem),radial-gradient(circle_at_82%_45%,rgba(244,197,66,0.16),transparent_22rem)]" />
+
+        <div className="text-center lg:text-start">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-tertiary/30 bg-tertiary/10 px-4 py-2 text-sm font-bold text-tertiary">
+            <Sparkles size={16} />
+            صيدلية بيطرية احترافية باسم المغامر
+          </div>
+          <h1 className="text-balance font-display text-4xl font-black leading-[1.25] text-on-surface sm:text-5xl lg:text-7xl">
+            رعاية بيطرية فاخرة
+            <span className="block text-gradient-primary">لحيواناتك وهجنك</span>
           </h1>
-          <p className="font-body text-base sm:text-lg md:text-xl text-on-surface-variant max-w-2xl mx-auto md:mx-0 mb-8 md:mb-10 leading-relaxed tracking-wide">
-            رعاية صحية مختارة بخبرة ومصممة لضمان صحة وقوة هجنك ورفاهية حيواناتك الأليفة، ضمن بيئة طبية متكاملة.
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-on-surface-variant sm:text-lg lg:mx-0">
+            المغامر يقدم تجربة تسوق بيطرية حديثة، توفر كافة الأدوية والمكملات الأساسية للحيوانات الأليفة والهجن، مع واجهة سهلة الاستخدام وخدمة عملاء متميزة.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center md:justify-start items-center gap-4">
+          <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
             <NavLink to="/pharmacy">
-              <Button className="text-base sm:text-lg px-8 py-4 shadow-float tracking-wide">تصفح المنتجات</Button>
+              <Button className="px-8 py-4 text-base sm:text-lg">
+                تصفح المنتجات
+                <ArrowLeft size={20} className="mr-2" />
+              </Button>
             </NavLink>
-            <Button variant="secondary" className="text-base sm:text-lg px-8 py-4 tracking-wide shadow-soft">استشارة طبية</Button>
+            <NavLink to="/login">
+              <Button variant="secondary" className="px-8 py-4 text-base sm:text-lg">
+               انضم إلينا
+              </Button>
+            </NavLink>
           </div>
         </div>
-        <div className="flex-1 relative w-full flex justify-center md:justify-end items-center mt-6 md:mt-0">
-          <div className="relative w-full max-w-[260px] sm:max-w-[340px] lg:max-w-[440px] isolate">
-            {/* Background Dog Image - Layer 1 (Back top right) */}
-            <div className="hidden md:block absolute -z-20 -top-6 -right-6 lg:-top-10 lg:-right-14 w-2/3 aspect-[4/5] overflow-hidden rounded-[2rem_0.5rem_2rem_0.5rem] shadow-ambient opacity-[0.6] blur-sm rotate-6 transform transition-transform hover:rotate-3 duration-500">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent z-10 mix-blend-overlay" />
-              <img src="/images/hero-dog.png" alt="Clinical Dog Sanctuary" className="object-cover w-full h-full" />
-            </div>
 
-            {/* Background Cat Image - Layer 2 (Back bottom left) */}
-            <div className="hidden md:block absolute -z-10 -bottom-6 -left-6 lg:-bottom-12 lg:-left-12 w-3/5 aspect-[4/5] overflow-hidden rounded-[1rem_2rem_1rem_2rem] shadow-ambient opacity-[0.7] rotate-[-8deg] blur-[2px] transform transition-transform hover:rotate-[-4deg] duration-500">
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent z-10 mix-blend-overlay" />
-              <img src="/images/hero-cat.png" alt="Clinical Cat Sanctuary" className="object-cover w-full h-full" />
-            </div>
-
-            {/* Foreground Camel Image - Main Focal Point */}
-            <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-[2rem_0.5rem_2rem_0.5rem] md:rounded-3xl bg-surface-container-low shadow-float ring-1 ring-white/40">
-              <img
-                src="/images/hero-camel.png"
-                alt="Premium Camel Racing at Sunset"
-                className="object-cover w-full h-full scale-[1.01] hover:scale-[1.03] transition-transform duration-700"
-              />
-            </div>
-            {/* Decorative elements behind */}
-            <div className="hidden md:block absolute -z-30 top-8 -left-8 lg:top-12 lg:-left-12 w-full h-full rounded-3xl border border-outline-variant/30"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features & Stats Section */}
-      <section className="relative py-12 md:py-20 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl w-full">
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-16">
-          {features.map((feature, index) => (
-            <div key={index} className="flex flex-col items-center text-center group cursor-pointer p-4 md:p-6 rounded-2xl hover:border-outline-variant/30 hover:bg-surface-container-low/50 border border-transparent transition-all duration-300">
-              <div className="relative mb-6">
-                {/* Abstract shape glow */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${feature.glowColor} blur-[24px] opacity-20 group-hover:opacity-40 transition-opacity duration-300 rounded-full scale-[1.6]`} />
-                
-                {/* Floating Icon */}
-                <div className="relative z-10 transform group-hover:-translate-y-2 transition-transform duration-300 p-2">
-                  <feature.icon strokeWidth={1.5} className={`w-12 h-12 md:w-14 md:h-14 ${feature.iconColor} drop-shadow-md`} />
+        <div className="relative mx-auto w-full max-w-[540px]">
+          <div className="absolute -inset-6 rounded-[40px] bg-gradient-to-br from-primary/25 via-transparent to-tertiary/20 blur-2xl" />
+          <div className="luxury-panel relative overflow-hidden rounded-[38px] p-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-4 pt-10">
+                <div className="overflow-hidden rounded-[30px] border border-white/10">
+                  <img src="/images/hero-camel.png" alt="رعاية بيطرية للهجن" className="h-64 w-full object-cover transition-transform duration-700 hover:scale-105" />
+                </div>
+                <div className="rounded-[28px] bg-primary/15 p-5 shadow-blue-glow">
+                  <Activity className="mb-3 text-tertiary" size={28} />
+                  <p className="text-sm font-bold leading-7 text-on-surface">متابعة صحية ومنتجات جاهزة للطلب.</p>
                 </div>
               </div>
-              <h3 className="text-xl md:text-2xl font-display font-bold text-on-surface mb-3 md:mb-4 group-hover:text-primary transition-colors">
-                {feature.title}
-              </h3>
-              <p className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="flex flex-col items-center justify-center py-10 md:py-14 px-6 rounded-[24px] bg-surface-container bg-opacity-40 border border-outline-variant/10 hover:bg-surface-container-low transition-colors duration-300 text-center">
-              <div className="mb-4 relative inline-block">
-                <span className="text-5xl md:text-6xl font-display font-bold text-on-surface z-10 relative tracking-wide">
-                  {stat.value}
-                </span>
-                <div className="absolute bottom-[4px] md:bottom-[8px] right-0 translate-x-[15%] w-[80%] h-[12px] bg-primary z-0 opacity-80" />
+              <div className="space-y-4">
+                <div className="rounded-[28px] bg-tertiary p-5 text-on-tertiary shadow-gold">
+                  <BadgeCheck className="mb-3" size={30} />
+                  <p className="font-display text-2xl font-black">اختيار دقيق</p>
+                  <p className="mt-2 text-sm font-bold opacity-80">للأدوية والمكملات البيطرية.</p>
+                </div>
+                <div className="overflow-hidden rounded-[30px] border border-white/10">
+                  <img src="/images/hero-cat.png" alt="رعاية بيطرية للحيوانات الأليفة" className="h-72 w-full object-cover transition-transform duration-700 hover:scale-105" />
+                </div>
               </div>
-              <span className="font-body text-base lg:text-lg font-medium text-on-surface-variant mt-2">
-                {stat.label}
-              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map(feature => (
+            <div key={feature.title} className="group rounded-[30px] border border-white/10 bg-surface-container-lowest/70 p-6 shadow-soft backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:border-primary/40 hover:shadow-blue-glow">
+              <div className="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 text-tertiary transition-transform duration-300 group-hover:scale-110">
+                <feature.icon size={28} />
+              </div>
+              <h3 className="text-xl font-black">{feature.title}</h3>
+              <p className="mt-3 leading-7 text-on-surface-variant">{feature.description}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Editorial Content */}
-      <section className="bg-surface-container-low py-20 md:py-32 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center space-y-6 md:space-y-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-on-surface leading-tight tracking-tight">
-            أعلى معايير الرعاية، تليق بأصالة حيواناتك.
-          </h2>
-          <p className="font-body text-base sm:text-lg md:text-xl text-on-surface-variant max-w-3xl mx-auto tracking-wide leading-relaxed">
-            الصيدلية البيطرية الرائدة المتخصصة في سباقات الهجن والحيوانات الأليفة. نوفر أحدث الحلول العلاجية والمكملات الغذائية عالية الجودة لدعم صحة حيواناتك.
-          </p>
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="luxury-panel grid items-center gap-8 rounded-[36px] p-6 sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
+          <div className="overflow-hidden rounded-[30px]">
+            <img src="/images/hero-dog.png" alt="أدوية ورعاية بيطرية" className="h-72 w-full object-cover sm:h-96" />
+          </div>
+          <div>
+            <p className="mb-3 text-sm font-black text-tertiary">منصة بروح بيطرية</p>
+            <h2 className="text-balance text-3xl font-black leading-[1.35] sm:text-5xl">
+             علاجات بيطرية ومكملات لهجن السباق.
+            </h2>
+            <p className="mt-5 leading-8 text-on-surface-variant">
+              المغامر هو صيدلية بيطرية متخصصة تقدم حلول علاجية ومكملات مختارة بعناية للرعاية البيطرية اليومية، مع تجربة شراء سريعة وواضحة.
+            </p>
+          </div>
         </div>
       </section>
     </div>

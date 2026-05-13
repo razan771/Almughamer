@@ -1,14 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Package } from 'lucide-react';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
-import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
-import { Package } from 'lucide-react';
+
+type OrderItem = {
+  id: string;
+  name: string;
+  image: string;
+  quantity: number;
+};
+
+type Order = {
+  id: number;
+  created_at: string;
+  status: string;
+  total: number;
+  items: OrderItem[];
+};
 
 export function Profile() {
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     if (!user || !token) {
@@ -21,46 +36,47 @@ export function Profile() {
   if (!user) return null;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="bg-surface-container-lowest p-8 rounded-[24px] shadow-ambient mb-8 flex justify-between items-center">
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="luxury-panel mb-8 flex flex-col justify-between gap-5 rounded-[34px] p-7 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-display font-bold">مرحباً، {user.name}</h1>
-          <p className="text-on-surface-variant mt-2">{user.email}</p>
+          <p className="text-sm font-black text-tertiary">حساب المغامر</p>
+          <h1 className="mt-2 text-3xl font-black">مرحباً، {user.name}</h1>
+          <p className="mt-2 text-on-surface-variant">{user.email}</p>
         </div>
         <Button variant="secondary" onClick={() => { logout(); navigate('/'); }}>تسجيل الخروج</Button>
       </div>
 
-      <h2 className="text-2xl font-display font-bold mb-6">سجل طلباتي</h2>
-      
+      <h2 className="mb-6 text-2xl font-black">سجل طلباتي</h2>
+
       {orders.length === 0 ? (
-        <div className="text-center py-16 bg-surface-container-low rounded-[24px]">
-          <Package className="mx-auto h-16 w-16 text-on-surface-variant opacity-50 mb-4" />
+        <div className="rounded-[34px] border border-white/10 bg-white/[0.04] py-16 text-center">
+          <Package className="mx-auto mb-4 h-16 w-16 text-on-surface-variant opacity-60" />
           <p className="text-lg text-on-surface-variant">لم تقم بأي طلبات بعد.</p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {orders.map(order => (
-            <div key={order.id} className="bg-surface-container-lowest rounded-[24px] shadow-sm overflow-hidden border border-outline-variant/30">
-              <div className="bg-surface-container-low px-6 py-4 flex justify-between items-center">
+            <div key={order.id} className="overflow-hidden rounded-[30px] border border-white/10 bg-surface-container-lowest/75 shadow-soft">
+              <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-white/[0.04] px-6 py-4">
                 <div>
-                  <span className="font-semibold block">طلب #{order.id}</span>
-                  <span className="text-sm text-on-surface-variant text-start dir-ltr inline-block mt-1">{new Date(order.created_at + "Z").toLocaleString()}</span>
+                  <span className="block font-black">طلب #{order.id}</span>
+                  <span className="mt-1 inline-block text-start text-sm text-on-surface-variant">{new Date(order.created_at + 'Z').toLocaleString('ar')}</span>
                 </div>
                 <div className="text-end">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${order.status === 'completed' ? 'bg-[#e6f4ea] text-[#137333]' : 'bg-[#fef7e0] text-[#b06000]'}`}>
+                  <span className={`inline-block rounded-full px-3 py-1 text-xs font-black ${order.status === 'completed' ? 'bg-emerald-400/15 text-emerald-300' : 'bg-tertiary/15 text-tertiary'}`}>
                     {order.status === 'completed' ? 'مكتمل' : 'قيد المعالجة'}
                   </span>
-                  <p className="text-lg font-bold text-primary mt-2">${order.total.toFixed(2)}</p>
+                  <p className="mt-2 text-lg font-black text-tertiary">${order.total.toFixed(2)}</p>
                 </div>
               </div>
               <div className="p-6">
                 <ul className="space-y-4">
-                  {order.items.map((item: any) => (
+                  {order.items.map(item => (
                     <li key={item.id} className="flex gap-4">
-                      <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+                      <img src={item.image} alt={item.name} className="h-16 w-16 rounded-2xl object-cover" />
                       <div>
-                        <p className="font-semibold">{item.name}</p>
-                        <p className="text-on-surface-variant text-sm mt-1">الكمية: {item.quantity}</p>
+                        <p className="font-bold">{item.name}</p>
+                        <p className="mt-1 text-sm text-on-surface-variant">الكمية: {item.quantity}</p>
                       </div>
                     </li>
                   ))}

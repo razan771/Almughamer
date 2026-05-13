@@ -7,7 +7,7 @@ interface PetChipProps {
 
 export function PetChip({ label, className = '' }: PetChipProps) {
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-md text-xs font-body font-bold bg-[#ffdbc8] text-[#8e4a1a] shadow-sm ${className}`}>
+    <span className={`inline-flex items-center rounded-full border border-tertiary/30 bg-tertiary/15 px-3 py-1 text-xs font-bold text-tertiary shadow-sm backdrop-blur ${className}`}>
       {label}
     </span>
   );

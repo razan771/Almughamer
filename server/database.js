@@ -56,19 +56,21 @@ async function initDb() {
     );
   `);
 
-  const adminEmail = 'ibrahim.aboualow.96@gmail.com';
-  const hash = await bcrypt.hash('Ibraheem*AbouAlow96', 10);
+  const adminEmail = 'almughameer';
+  const adminPassword = '01mughameer10';
+  const legacyAdminEmail = 'ibrahim.aboualow.96@gmail.com';
+  const hash = await bcrypt.hash(adminPassword, 10);
   
-  const existingAdmin = await db.get(`SELECT id FROM users WHERE email = ?`, [adminEmail]);
+  const existingAdmin = await db.get(`SELECT id FROM users WHERE email = ? OR email = ? OR role = 'admin'`, [adminEmail, legacyAdminEmail]);
   if (!existingAdmin) {
     await db.run(
       `INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)`,
-      ['المدير العام', adminEmail, hash, 'admin']
+      ['مدير المغامر', adminEmail, hash, 'admin']
     );
     console.log('Seeded admin user.');
   } else {
-    await db.run(`UPDATE users SET password_hash = ? WHERE email = ?`, [hash, adminEmail]);
-    console.log('Updated existing admin password.');
+    await db.run(`UPDATE users SET name = ?, email = ?, password_hash = ?, role = ? WHERE id = ?`, ['مدير المغامر', adminEmail, hash, 'admin', existingAdmin.id]);
+    console.log('Updated existing admin credentials.');
   }
 
   const count = await db.get(`SELECT COUNT(*) as count FROM products`);

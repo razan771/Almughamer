@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MessageCircle } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 import { api } from '../api';
 import type { Product } from '../components/ProductCard';
@@ -13,13 +14,13 @@ interface CheckoutProps {
 export function Checkout({ items, clearCart }: CheckoutProps) {
   const { user, token } = useAuth();
   const navigate = useNavigate();
-  
+
   const [customerName, setCustomerName] = useState(user?.name || '');
   const [customerPhone, setCustomerPhone] = useState('');
   const [customerAddress, setCustomerAddress] = useState('');
 
   useEffect(() => {
-    if(!user) {
+    if (!user) {
       navigate('/login');
     }
   }, [user, navigate]);
@@ -39,97 +40,76 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
 
     try {
       if (token) {
-        // Save the order to backend before redirecting
         await api.checkout(items, total, 'whatsapp', token);
       }
     } catch {
       console.error('Failed to save order to backend');
     }
 
-    const message = `السلام عليكم، أريد طلب من متجر التسنيم:\n\n🛒 المنتجات:\n` +
-      items.map(item => `- ${item.name} × ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}`).join('\n') +
-      `\n\n💰 المجموع: $${total.toFixed(2)}\n\n` +
-      `👤 الاسم: ${customerName}\n` +
-      `📞 رقم التواصل: ${customerPhone}\n` +
-      `📍 العنوان: ${customerAddress}`;
+    const message = `السلام عليكم، أريد طلباً من متجر المغامر:\n\nالمنتجات:\n` +
+      items.map(item => `- ${item.name} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}`).join('\n') +
+      `\n\nالمجموع: $${total.toFixed(2)}\n\n` +
+      `الاسم: ${customerName}\n` +
+      `رقم التواصل: ${customerPhone}\n` +
+      `العنوان: ${customerAddress}`;
 
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${config.WHATSAPP_NUMBER}?text=${encodedMessage}`;
-    
-    window.open(whatsappUrl, '_blank');
+    window.open(`https://wa.me/${config.WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
     clearCart();
     navigate('/');
   };
 
-  if(!user || items.length === 0) {
+  if (!user || items.length === 0) {
     return (
-      <div className="text-center py-24">
-        <h2 className="text-2xl font-bold font-display">السلة فارغة أو غير مسجل دخول</h2>
+      <div className="px-4 py-24 text-center">
+        <h2 className="text-2xl font-black">السلة فارغة أو لم يتم تسجيل الدخول</h2>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
-      <h1 className="text-3xl md:text-4xl font-display font-extrabold mb-8 text-center md:text-start">إتمام الشراء</h1>
-      <div className="bg-surface-container-lowest p-6 md:p-8 rounded-[24px] shadow-ambient">
-        <div className="mb-8 border-b border-outline-variant/20 pb-8">
-          <h2 className="text-xl md:text-2xl font-display font-bold mb-4">ملخص الطلب</h2>
-          {items.map(item => (
-             <div key={item.id} className="flex justify-between items-center mb-2">
-               <span className="text-sm md:text-base">{item.name} x {item.quantity}</span>
-               <span className="font-bold text-sm md:text-base">${(item.price * item.quantity).toFixed(2)}</span>
-             </div>
-          ))}
-          <div className="mt-4 pt-4 border-t border-outline-variant/20 flex justify-between text-lg md:text-xl font-bold">
-            <span>الإجمالي:</span>
-            <span className="text-primary">${total.toFixed(2)}</span>
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mb-8 text-center md:text-start">
+        <p className="text-sm font-black text-tertiary">خطوة أخيرة</p>
+        <h1 className="mt-2 text-4xl font-black">إتمام الشراء</h1>
+      </div>
+
+      <div className="luxury-panel rounded-[34px] p-6 md:p-8">
+        <div className="mb-8 border-b border-white/10 pb-8">
+          <h2 className="mb-5 text-2xl font-black">ملخص الطلب</h2>
+          <div className="space-y-3">
+            {items.map(item => (
+              <div key={item.id} className="flex items-center justify-between gap-4 rounded-2xl bg-white/[0.04] p-4">
+                <span className="text-sm font-bold md:text-base">{item.name} x {item.quantity}</span>
+                <span className="font-display font-black text-tertiary">${(item.price * item.quantity).toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 flex justify-between text-xl font-black">
+            <span>الإجمالي</span>
+            <span className="text-tertiary">${total.toFixed(2)}</span>
           </div>
         </div>
 
         <form onSubmit={handleWhatsAppCheckout} className="space-y-6">
-          <h2 className="text-xl md:text-2xl font-display font-bold mb-4">بيانات التوصيل</h2>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block mb-2 font-medium text-sm md:text-base">الاسم الكامل *</label>
-              <input 
-                required 
-                type="text" 
-                value={customerName} 
-                onChange={e => setCustomerName(e.target.value)}
-                className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 focus:border-primary outline-none font-body transition-colors"
-                placeholder="الاسم الكامل"
-              />
-            </div>
-            
-            <div>
-              <label className="block mb-2 font-medium text-sm md:text-base">رقم التواصل *</label>
-              <input 
-                required 
-                type="tel" 
-                value={customerPhone} 
-                onChange={e => setCustomerPhone(e.target.value)}
-                className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 focus:border-primary outline-none font-body dir-ltr text-end transition-colors"
-                placeholder="0501234567"
-              />
-            </div>
+          <h2 className="text-2xl font-black">بيانات التوصيل</h2>
 
-            <div>
-              <label className="block mb-2 font-medium text-sm md:text-base">العنوان التفصيلي</label>
-              <textarea 
-                value={customerAddress} 
-                onChange={e => setCustomerAddress(e.target.value)}
-                className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 focus:border-primary outline-none font-body min-h-[100px] transition-colors"
-                placeholder="المدينة، الحي، الشارع..."
-              />
-            </div>
+          <div className="grid gap-4">
+            <label className="grid gap-2 font-bold">
+              الاسم الكامل *
+              <input required type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none transition-colors focus:border-tertiary" placeholder="الاسم الكامل" />
+            </label>
+            <label className="grid gap-2 font-bold">
+              رقم التواصل *
+              <input required type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 text-end outline-none transition-colors focus:border-tertiary" placeholder="0501234567" />
+            </label>
+            <label className="grid gap-2 font-bold">
+              العنوان التفصيلي
+              <textarea value={customerAddress} onChange={e => setCustomerAddress(e.target.value)} className="min-h-[110px] rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none transition-colors focus:border-tertiary" placeholder="المدينة، الحي، الشارع..." />
+            </label>
           </div>
 
-          <button 
-            type="submit" 
-            className="w-full py-4 text-base md:text-lg font-bold rounded-xl bg-[#25D366] hover:bg-[#128C7E] text-white transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_4px_14px_0_rgba(37,211,102,0.39)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.23)] hover:-translate-y-1 mt-8"
-          >
+          <button type="submit" className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#25D366] py-4 text-base font-black text-white shadow-[0_0_32px_rgba(37,211,102,0.28)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#20bd5a] md:text-lg">
+            <MessageCircle size={22} />
             إتمام الطلب عبر واتساب
           </button>
         </form>

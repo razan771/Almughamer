@@ -5,22 +5,52 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-on-surface font-body antialiased;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(47, 128, 255, 0.16), transparent 30rem),
+      radial-gradient(circle at 85% 10%, rgba(244, 197, 66, 0.12), transparent 24rem),
+      linear-gradient(135deg, #06111f 0%, #071727 48%, #03101d 100%);
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display tracking-tight text-on-surface font-bold;
+    @apply font-display text-on-surface font-bold;
+    letter-spacing: 0;
+  }
+
+  ::selection {
+    @apply bg-tertiary text-on-tertiary;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply bg-surface/80 backdrop-blur-[20px];
+    @apply bg-surface/70 backdrop-blur-2xl border border-white/10;
+  }
+
+  .app-bg {
+    background-image:
+      linear-gradient(rgba(117, 183, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(117, 183, 255, 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .luxury-panel {
+    @apply bg-surface-container-lowest/80 border border-white/10 shadow-ambient backdrop-blur-xl;
+  }
+
+  .gold-glow {
+    @apply shadow-gold;
   }
   
   .bg-gradient-primary {
-    @apply bg-gradient-to-br from-primary to-primary-container;
+    @apply bg-gradient-to-br from-primary via-secondary to-primary-container;
   }
   
   .text-gradient-primary {
@@ -28,10 +58,14 @@
   }
 
   .bg-gradient-brand {
-    @apply bg-gradient-to-r from-primary to-primary-container;
+    @apply bg-gradient-to-r from-tertiary via-[#ffe08a] to-primary;
   }
   
   .ghost-border {
-    @apply border border-outline-variant/20 focus-within:border-b-2 focus-within:border-b-primary focus-within:border-t-transparent focus-within:border-l-transparent focus-within:border-r-transparent transition-colors;
+    @apply border border-outline-variant/50 focus-within:border-tertiary transition-colors;
+  }
+
+  .text-balance {
+    text-wrap: balance;
   }
 }

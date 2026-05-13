@@ -11,17 +11,17 @@ export const products = [
   {
     id: '2',
     name: 'قطرات مكافحة الطفيليات',
-    description: 'علاج موضعي شهري يقضي على القراد والطفيليات بفعالية وأمان.',
-    price: 32.50,
+    description: 'علاج موضعي شهري يساعد في مكافحة الطفيليات بفعالية وأمان.',
+    price: 32.5,
     image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80',
     category: 'مكافحة الطفيليات',
-    forPet: 'الإبل والحيران',
+    forPet: 'الإبل والحيوانات الأليفة',
   },
   {
     id: '3',
     name: 'معجون الطاقة والتحمل',
-    description: 'تركيبة بيطرية سريعة الامتصاص لتعزيز الطاقة وتقليل الإجهاد أثناء سباقات الهجن.',
-    price: 28.00,
+    description: 'تركيبة بيطرية سريعة الامتصاص لتعزيز الطاقة وتقليل الإجهاد أثناء النشاط.',
+    price: 28,
     image: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&q=80',
     category: 'فيتامينات',
     forPet: 'هجن السباق',
@@ -33,6 +33,6 @@ export const products = [
     price: 22.99,
     image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80',
     category: 'المكملات الغذائية',
-    forPet: 'جميع الإبل',
-  }
+    forPet: 'جميع الحيوانات',
+  },
 ];

@@ -127,7 +127,7 @@ app.post('/api/orders', verifyToken, async (req, res) => {
   const db = await getDb();
   const result = await db.run(
     'INSERT INTO orders (user_id, items, total, payment_method) VALUES (?, ?, ?, ?)',
-    [req.user.id, JSON.stringify(items), total, payment_method || 'cash_on_delivery']
+    [req.user.id, JSON.stringify(items), total, payment_method || 'whatsapp']
   );
   res.json({ id: result.lastID, success: true });
 });

@@ -302,7 +302,7 @@ export function Admin() {
                   <td className="px-6 py-4">
                     <p className="font-black">#{o.id}</p>
                     <p className="mt-1 text-sm text-on-surface-variant">{new Date(o.created_at + 'Z').toLocaleString('ar')}</p>
-                    <p className="mt-1 text-xs text-tertiary">{o.payment_method === 'cash_on_delivery' ? 'دفع عند الاستلام' : 'بطاقة ائتمان'}</p>
+                    <p className="mt-1 text-xs text-tertiary">طلب عبر واتساب</p>
                   </td>
                   <td className="px-6 py-4">
                     <p className="font-bold">{o.user_name}</p>

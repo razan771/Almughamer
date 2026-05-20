@@ -66,8 +66,8 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center md:text-start">
-        <p className="text-sm font-black text-tertiary">خطوة أخيرة</p>
-        <h1 className="mt-2 text-4xl font-black">إتمام الشراء</h1>
+        <p className="text-sm font-black text-tertiary">طلب عبر واتساب</p>
+        <h1 className="mt-2 text-4xl font-black">إتمام الطلب</h1>
       </div>
 
       <div className="luxury-panel rounded-[34px] p-6 md:p-8">
@@ -88,7 +88,7 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
         </div>
 
         <form onSubmit={handleWhatsAppCheckout} className="space-y-6">
-          <h2 className="text-2xl font-black">بيانات التوصيل</h2>
+          <h2 className="text-2xl font-black">بيانات التواصل</h2>
 
           <div className="grid gap-4">
             <label className="grid gap-2 font-bold">
@@ -100,14 +100,14 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
               <input required type="tel" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 text-end outline-none transition-colors focus:border-tertiary" placeholder="0501234567" />
             </label>
             <label className="grid gap-2 font-bold">
-              العنوان التفصيلي
-              <textarea value={customerAddress} onChange={e => setCustomerAddress(e.target.value)} className="min-h-[110px] rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none transition-colors focus:border-tertiary" placeholder="المدينة، الحي، الشارع..." />
+              ملاحظات أو العنوان
+              <textarea value={customerAddress} onChange={e => setCustomerAddress(e.target.value)} className="min-h-[110px] rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none transition-colors focus:border-tertiary" placeholder="أي تفاصيل تريد إرسالها عبر واتساب..." />
             </label>
           </div>
 
           <button type="submit" className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#25D366] py-4 text-base font-black text-white shadow-[0_0_32px_rgba(37,211,102,0.28)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#20bd5a] md:text-lg">
             <MessageCircle size={22} />
-            إتمام الطلب عبر واتساب
+            إرسال الطلب عبر واتساب
           </button>
         </form>
       </div>

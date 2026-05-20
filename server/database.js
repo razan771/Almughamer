@@ -64,7 +64,7 @@ async function initDb() {
       user_id INTEGER,
       items TEXT NOT NULL,
       total REAL NOT NULL,
-      payment_method TEXT DEFAULT 'cash_on_delivery',
+      payment_method TEXT DEFAULT 'whatsapp',
       status TEXT DEFAULT 'pending',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (user_id) REFERENCES users (id)

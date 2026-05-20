@@ -21,7 +21,7 @@ export function Pharmacy({ products, onAddToCart }: PharmacyProps) {
             </div>
             <h1 className="text-balance text-4xl font-black leading-[1.25] sm:text-6xl">صيدلية المغامر الفضي</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-on-surface-variant">
-              أدوية ومكملات بيطرية بتصميم واضح: الصورة، الاسم، السعر، وزر الشراء فقط لتجربة أسرع على الجوال والسطح.
+              أدوية ومكملات بيطرية.
             </p>
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

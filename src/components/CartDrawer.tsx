@@ -22,20 +22,13 @@ export function CartDrawer({ isOpen, onClose, items, onRemoveItem, onUpdateQuant
   return (
     <>
       {isOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-background/70 backdrop-blur-md transition-opacity"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 z-50 bg-background/70 backdrop-blur-md transition-opacity" onClick={onClose} />
       )}
 
-      <aside
-        className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-md transform flex-col border-l border-white/10 bg-surface-container-lowest/95 shadow-ambient backdrop-blur-2xl transition-transform duration-300 ease-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
+      <aside className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-md transform flex-col border-l border-white/10 bg-surface-container-lowest/95 shadow-ambient backdrop-blur-2xl transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex items-center justify-between border-b border-white/10 p-6">
           <div>
-            <p className="text-sm font-bold text-tertiary">المغامر</p>
+            <p className="text-sm font-bold text-tertiary">المغامر الفضي</p>
             <h2 className="text-2xl font-black">سلة المشتريات</h2>
           </div>
           <button onClick={onClose} className="grid h-11 w-11 place-items-center rounded-2xl bg-white/8 text-on-surface-variant transition-colors hover:bg-error/15 hover:text-error">

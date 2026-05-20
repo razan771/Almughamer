@@ -28,7 +28,7 @@ export function Register() {
   return (
     <div className="flex min-h-[72vh] items-center justify-center px-4 py-12">
       <div className="luxury-panel w-full max-w-md rounded-[34px] p-7 sm:p-8">
-        <p className="mb-2 text-center text-sm font-black text-tertiary">انضم إلى المغامر</p>
+        <p className="mb-2 text-center text-sm font-black text-tertiary">انضم إلى المغامر الفضي</p>
         <h2 className="mb-7 text-center text-3xl font-black">مستخدم جديد</h2>
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
           <label className="relative">

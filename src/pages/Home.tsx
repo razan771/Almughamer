@@ -4,12 +4,11 @@ import { Activity, ArrowLeft, BadgeCheck, HeartPulse, Pill, ShieldCheck, Sparkle
 import { Button } from '../components/Button';
 
 const features = [
-  { icon: ShieldCheck, title: 'أدوية موثوقة', description: 'منتجات مختارة بعناية من فئات علاجية ومكملات بيطرية عالية الجودة.' },
+  { icon: ShieldCheck, title: 'أدوية موثوقة', description: 'منتجات مختارة بعناية من فئات علاجية ومكملات بيطرية عالية الجودة للهجن.' },
   { icon: HeartPulse, title: 'رعاية مستمرة', description: 'تجربة شراء واضحة تساعدك على الوصول للعلاج المناسب بسرعة وهدوء.' },
-  { icon: Syringe, title: 'حلول علاجية', description: 'تصنيفات عملية للأدوية والفيتامينات ومنتجات العناية للحيوانات.' },
-  { icon: Pill, title: 'مكملات احترافية', description: 'دعم يومي للصحة والطاقة والمناعة للحيوانات الأليفة والهجن.' },
+  { icon: Syringe, title: 'حلول علاجية', description: 'تصنيفات عملية للأدوية والفيتامينات ومنتجات العناية بهجن السباق.' },
+  { icon: Pill, title: 'مكملات احترافية', description: 'دعم يومي للصحة والطاقة والمناعة والتحمل للهجن في مختلف مراحل الرعاية.' },
 ];
-
 
 export function Home() {
   return (
@@ -20,14 +19,14 @@ export function Home() {
         <div className="text-center lg:text-start">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-tertiary/30 bg-tertiary/10 px-4 py-2 text-sm font-bold text-tertiary">
             <Sparkles size={16} />
-            صيدلية بيطرية احترافية باسم المغامر
+            صيدلية بيطرية احترافية باسم المغامر الفضي
           </div>
           <h1 className="text-balance font-display text-4xl font-black leading-[1.25] text-on-surface sm:text-5xl lg:text-7xl">
             رعاية بيطرية فاخرة
-            <span className="block text-gradient-primary">لحيواناتك وهجنك</span>
+            <span className="block text-gradient-primary">لهجنك بكل ثقة</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-on-surface-variant sm:text-lg lg:mx-0">
-            المغامر يقدم تجربة تسوق بيطرية حديثة، توفر كافة الأدوية والمكملات الأساسية للحيوانات الأليفة والهجن، مع واجهة سهلة الاستخدام وخدمة عملاء متميزة.
+            المغامر الفضي يقدم تجربة تسوق بيطرية حديثة، توفر الأدوية والمكملات الأساسية للهجن، مع واجهة سهلة الاستخدام وخدمة واضحة وسريعة.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row lg:justify-start">
             <NavLink to="/pharmacy">
@@ -38,7 +37,7 @@ export function Home() {
             </NavLink>
             <NavLink to="/login">
               <Button variant="secondary" className="px-8 py-4 text-base sm:text-lg">
-               انضم إلينا
+                انضم إلينا
               </Button>
             </NavLink>
           </div>
@@ -64,7 +63,7 @@ export function Home() {
                   <p className="mt-2 text-sm font-bold opacity-80">للأدوية والمكملات البيطرية.</p>
                 </div>
                 <div className="overflow-hidden rounded-[30px] border border-white/10">
-                  <img src="/images/hero-cat.png" alt="رعاية بيطرية للحيوانات الأليفة" className="h-72 w-full object-cover transition-transform duration-700 hover:scale-105" />
+                  <img src="/images/camel-hero.png" alt="هجن ورعاية بيطرية" className="h-72 w-full object-cover transition-transform duration-700 hover:scale-105" />
                 </div>
               </div>
             </div>
@@ -89,15 +88,15 @@ export function Home() {
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="luxury-panel grid items-center gap-8 rounded-[36px] p-6 sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
           <div className="overflow-hidden rounded-[30px]">
-            <img src="/images/hero-dog.png" alt="أدوية ورعاية بيطرية" className="h-72 w-full object-cover sm:h-96" />
+            <img src="/images/hero-camel.png" alt="أدوية ورعاية بيطرية للهجن" className="h-72 w-full object-cover sm:h-96" />
           </div>
           <div>
             <p className="mb-3 text-sm font-black text-tertiary">منصة بروح بيطرية</p>
             <h2 className="text-balance text-3xl font-black leading-[1.35] sm:text-5xl">
-             علاجات بيطرية ومكملات لهجن السباق.
+              علاجات بيطرية ومكملات مختارة لهجن السباق.
             </h2>
             <p className="mt-5 leading-8 text-on-surface-variant">
-              المغامر هو صيدلية بيطرية متخصصة تقدم حلول علاجية ومكملات مختارة بعناية للرعاية البيطرية اليومية، مع تجربة شراء سريعة وواضحة.
+              المغامر الفضي هو صيدلية بيطرية متخصصة تقدم حلولاً علاجية ومكملات مختارة بعناية للرعاية البيطرية اليومية، مع تجربة شراء سريعة وواضحة.
             </p>
           </div>
         </div>

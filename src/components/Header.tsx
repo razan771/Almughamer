@@ -28,8 +28,8 @@ export function Header({ cartCount, onOpenCart }: HeaderProps) {
               <ShieldPlus size={27} />
             </span>
             <span className="leading-none">
-              <span className="block font-display text-3xl font-black text-gradient-primary sm:text-4xl">المغامر</span>
-              <span className="mt-1 hidden text-xs font-bold text-on-surface-variant sm:block">صيدلية أدوية بيطرية</span>
+              <span className="block font-display text-2xl font-black text-gradient-primary sm:text-4xl">المغامر الفضي</span>
+              <span className="mt-1 hidden text-xs font-bold text-on-surface-variant sm:block">صيدلية أدوية بيطرية للهجن</span>
             </span>
           </NavLink>
 

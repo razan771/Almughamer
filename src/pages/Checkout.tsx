@@ -20,9 +20,7 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
   const [customerAddress, setCustomerAddress] = useState('');
 
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    }
+    if (!user) navigate('/login');
   }, [user, navigate]);
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -39,14 +37,12 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
     }
 
     try {
-      if (token) {
-        await api.checkout(items, total, 'whatsapp', token);
-      }
+      if (token) await api.checkout(items, total, 'whatsapp', token);
     } catch {
       console.error('Failed to save order to backend');
     }
 
-    const message = `السلام عليكم، أريد طلباً من متجر المغامر:\n\nالمنتجات:\n` +
+    const message = `السلام عليكم، أريد طلباً من متجر المغامر الفضي:\n\nالمنتجات:\n` +
       items.map(item => `- ${item.name} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}`).join('\n') +
       `\n\nالمجموع: $${total.toFixed(2)}\n\n` +
       `الاسم: ${customerName}\n` +

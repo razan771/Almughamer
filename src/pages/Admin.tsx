@@ -35,10 +35,7 @@ export function Admin() {
   const [category, setCategory] = useState('');
   const [forPet, setForPet] = useState('');
 
-  const loadProducts = async () => {
-    setProducts(await api.getProducts());
-  };
-
+  const loadProducts = async () => setProducts(await api.getProducts());
   const loadOrders = async () => {
     if (token) setOrders(await api.getAdminOrders(token));
   };
@@ -131,7 +128,7 @@ export function Admin() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <p className="text-sm font-black text-tertiary">المغامر</p>
+          <p className="text-sm font-black text-tertiary">المغامر الفضي</p>
           <h1 className="mt-2 text-4xl font-black">لوحة تحكم الإدارة</h1>
         </div>
         <Button variant="secondary" onClick={handleLogout}>تسجيل الخروج</Button>

@@ -80,11 +80,11 @@ async function initDb() {
   if (!existingAdmin) {
     await db.run(
       `INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)`,
-      ['مدير المغامر', adminEmail, hash, 'admin']
+      ['مدير المغامر الفضي', adminEmail, hash, 'admin']
     );
     console.log('Seeded admin user.');
   } else {
-    await db.run(`UPDATE users SET name = ?, email = ?, password_hash = ?, role = ? WHERE id = ?`, ['مدير المغامر', adminEmail, hash, 'admin', existingAdmin.id]);
+    await db.run(`UPDATE users SET name = ?, email = ?, password_hash = ?, role = ? WHERE id = ?`, ['مدير المغامر الفضي', adminEmail, hash, 'admin', existingAdmin.id]);
     await db.run(`DELETE FROM users WHERE email = ? AND id != ?`, [legacyAdminEmail, existingAdmin.id]);
     console.log('Updated existing admin credentials.');
   }
@@ -96,7 +96,7 @@ async function initDb() {
         name: 'مقوي المفاصل المتقدم',
         description: 'مكمل غذائي عالي الجودة يحتوي على الجلوكوزامين والكوندرويتين لدعم المفاصل والقدرة على التحمل.',
         price: 45.99,
-        image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80',
+        image: '/images/hero-camel.png',
         category: 'المكملات الغذائية',
         forPet: 'هجن السباق',
       },
@@ -104,7 +104,7 @@ async function initDb() {
         name: 'قطرات مكافحة الطفيليات',
         description: 'علاج موضعي شهري يقضي على القراد والطفيليات بفعالية وأمان.',
         price: 32.50,
-        image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&q=80',
+        image: '/images/camel-hero.png',
         category: 'مكافحة الطفيليات',
         forPet: 'الإبل والحيران',
       },
@@ -112,7 +112,7 @@ async function initDb() {
         name: 'معجون الطاقة والتحمل',
         description: 'تركيبة بيطرية سريعة الامتصاص لتعزيز الطاقة وتقليل الإجهاد أثناء سباقات الهجن.',
         price: 28.00,
-        image: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&q=80',
+        image: '/images/hero-camel.png',
         category: 'فيتامينات',
         forPet: 'هجن السباق',
       },
@@ -120,7 +120,7 @@ async function initDb() {
         name: 'زيوت الأوميغا بلس للشعر',
         description: 'زيوت طبيعية غنية بأحماض أوميغا 3 لدعم صحة الجلد وجمال الوبر.',
         price: 22.99,
-        image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80',
+        image: '/images/camel-hero.png',
         category: 'المكملات الغذائية',
         forPet: 'جميع الإبل',
       }

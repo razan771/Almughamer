@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, MapPin, MessageCircle, Phone, Send, Share2, ShieldPlus } from 'lucide-react';
+import { MapPin, MessageCircle, Phone, Send, Share2, ShieldPlus } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -11,12 +11,12 @@ export function Footer() {
               <ShieldPlus size={26} />
             </span>
             <div>
-              <h2 className="font-display text-3xl font-black text-gradient-primary">المغامر</h2>
-              <p className="text-sm font-bold text-on-surface-variant">صيدلية أدوية بيطرية </p>
+              <h2 className="font-display text-3xl font-black text-gradient-primary">المغامر الفضي</h2>
+              <p className="text-sm font-bold text-on-surface-variant">صيدلية أدوية بيطرية للهجن</p>
             </div>
           </div>
           <p className="max-w-md leading-8 text-on-surface-variant">
-            حلول علاجية ومكملات مختارة بعناية للرعاية البيطرية اليومية، مع تجربة شراء سريعة وواضحة.
+            حلول علاجية ومكملات مختارة بعناية لرعاية الهجن، مع تجربة شراء سريعة وواضحة.
           </p>
         </div>
 

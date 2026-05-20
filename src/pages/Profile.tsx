@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Package } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Package, ShoppingBag } from 'lucide-react';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
 import { Button } from '../components/Button';
@@ -39,11 +39,19 @@ export function Profile() {
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="luxury-panel mb-8 flex flex-col justify-between gap-5 rounded-[34px] p-7 sm:flex-row sm:items-center">
         <div>
-          <p className="text-sm font-black text-tertiary">حساب المغامر</p>
+          <p className="text-sm font-black text-tertiary">حساب المغامر الفضي</p>
           <h1 className="mt-2 text-3xl font-black">مرحباً، {user.name}</h1>
           <p className="mt-2 text-on-surface-variant">{user.email}</p>
         </div>
-        <Button variant="secondary" onClick={() => { logout(); navigate('/'); }}>تسجيل الخروج</Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <NavLink to="/pharmacy">
+            <Button className="w-full px-6 py-3 sm:w-auto">
+              <ShoppingBag size={19} className="ml-2" />
+              تسوق الآن
+            </Button>
+          </NavLink>
+          <Button variant="secondary" onClick={() => { logout(); navigate('/'); }}>تسجيل الخروج</Button>
+        </div>
       </div>
 
       <h2 className="mb-6 text-2xl font-black">سجل طلباتي</h2>

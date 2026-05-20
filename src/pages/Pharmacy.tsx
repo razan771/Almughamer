@@ -1,7 +1,7 @@
 import React from 'react';
+import { Search, ShieldCheck, Sparkles } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 import type { Product } from '../components/ProductCard';
-import { Search, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface PharmacyProps {
   products: Product[];
@@ -17,9 +17,9 @@ export function Pharmacy({ products, onAddToCart }: PharmacyProps) {
           <div className="max-w-3xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-tertiary/30 bg-tertiary/10 px-4 py-2 text-sm font-bold text-tertiary">
               <Sparkles size={16} />
-              منتجات بيطرية مختارة
+              منتجات بيطرية مختارة للهجن
             </div>
-            <h1 className="text-balance text-4xl font-black leading-[1.25] sm:text-6xl">صيدلية المغامر</h1>
+            <h1 className="text-balance text-4xl font-black leading-[1.25] sm:text-6xl">صيدلية المغامر الفضي</h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-on-surface-variant">
               أدوية ومكملات بيطرية بتصميم واضح: الصورة، الاسم، السعر، وزر الشراء فقط لتجربة أسرع على الجوال والسطح.
             </p>

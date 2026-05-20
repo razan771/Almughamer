@@ -9,7 +9,14 @@ const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || 'almanara-secret-key-123';
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
+
+app.use((err, req, res, next) => {
+  if (err?.type === 'entity.too.large') {
+    return res.status(413).json({ success: false, message: 'Image is too large. Please upload a smaller image.' });
+  }
+  next(err);
+});
 
 initDb().then(() => console.log('Database initialized successfully.')).catch(console.error);
 

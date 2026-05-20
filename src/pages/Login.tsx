@@ -21,8 +21,8 @@ export function Login() {
       } else {
         alert(res.message || 'تسجيل الدخول غير صحيح');
       }
-    } catch {
-      alert('تعذر الاتصال بالخادم');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'تعذر الاتصال بالخادم');
     }
   };
 

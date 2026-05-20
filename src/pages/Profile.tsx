@@ -4,6 +4,7 @@ import { Package, ShoppingBag } from 'lucide-react';
 import { api } from '../api';
 import { useAuth } from '../AuthContext';
 import { Button } from '../components/Button';
+import { formatCurrency } from '../utils/currency';
 
 type OrderItem = {
   id: string;
@@ -74,7 +75,7 @@ export function Profile() {
                   <span className={`inline-block rounded-full px-3 py-1 text-xs font-black ${order.status === 'completed' ? 'bg-emerald-400/15 text-emerald-300' : 'bg-tertiary/15 text-tertiary'}`}>
                     {order.status === 'completed' ? 'مكتمل' : 'قيد المعالجة'}
                   </span>
-                  <p className="mt-2 text-lg font-black text-tertiary">${order.total.toFixed(2)}</p>
+                  <p className="mt-2 text-lg font-black text-tertiary">{formatCurrency(order.total)}</p>
                 </div>
               </div>
               <div className="p-6">

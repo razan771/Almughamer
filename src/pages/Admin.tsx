@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Edit2, ImagePlus, Package, Trash2, Upload } from 'lucide-react';
+import { CheckCircle, Edit2, ImagePlus, Package, Trash2, Upload, X } from 'lucide-react';
 import { api } from '../api';
 import type { Product } from '../components/ProductCard';
 import { Button } from '../components/Button';
 import { useAuth } from '../AuthContext';
+import { formatCurrency } from '../utils/currency';
 
 type Order = {
   id: number;
@@ -35,6 +36,8 @@ export function Admin() {
   const [category, setCategory] = useState('');
   const [forPet, setForPet] = useState('');
   const [imageFileName, setImageFileName] = useState('');
+  const [formMessage, setFormMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const loadProducts = async () => setProducts(await api.getProducts());
   const loadOrders = async () => {
@@ -50,11 +53,12 @@ export function Admin() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await api.login(username, password);
-    if (res.success && res.user.role === 'admin') {
-      login(res.token, res.user);
-    } else {
-      alert('تسجيل الدخول غير صحيح أو الحساب ليس إدارياً');
+    try {
+      const res = await api.login(username, password);
+      if (res.success && res.user.role === 'admin') login(res.token, res.user);
+      else alert('تسجيل الدخول غير صحيح أو الحساب ليس إدارياً');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'تسجيل الدخول غير صحيح');
     }
   };
 
@@ -78,12 +82,30 @@ export function Admin() {
     e.preventDefault();
     if (!token) return;
 
-    const payload = { name, price: parseFloat(price), image, description, category, forPet };
-    if (editingProduct) await api.updateProduct(editingProduct, payload, token);
-    else await api.addProduct(payload, token);
+    if (!image) {
+      setFormMessage({ type: 'error', text: 'يرجى رفع صورة المنتج قبل الحفظ.' });
+      return;
+    }
 
-    handleCancelEdit();
-    loadProducts();
+    setIsSaving(true);
+    setFormMessage(null);
+
+    try {
+      const payload = { name, price: parseFloat(price), image, description, category, forPet };
+      if (editingProduct) await api.updateProduct(editingProduct, payload, token);
+      else await api.addProduct(payload, token);
+
+      handleCancelEdit();
+      await loadProducts();
+      setFormMessage({ type: 'success', text: editingProduct ? 'تم تحديث المنتج بنجاح.' : 'تمت إضافة المنتج بنجاح.' });
+    } catch (error) {
+      setFormMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'تعذر حفظ المنتج. حاول مرة أخرى.',
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleEdit = (p: Product) => {
@@ -109,7 +131,11 @@ export function Admin() {
   const handleImageUpload = (file?: File) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      alert('يرجى اختيار ملف صورة فقط');
+      setFormMessage({ type: 'error', text: 'يرجى اختيار ملف صورة فقط.' });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setFormMessage({ type: 'error', text: 'حجم الصورة كبير. يرجى اختيار صورة أقل من 5MB.' });
       return;
     }
 
@@ -118,6 +144,7 @@ export function Admin() {
       if (typeof reader.result === 'string') {
         setImage(reader.result);
         setImageFileName(file.name);
+        setFormMessage(null);
       }
     };
     reader.readAsDataURL(file);
@@ -166,38 +193,57 @@ export function Admin() {
               <h3 className="mb-6 text-2xl font-black">{editingProduct ? 'تحديث المنتج' : 'إضافة منتج جديد'}</h3>
               <form onSubmit={handleSubmitProduct} className="flex flex-col gap-4">
                 <input required type="text" placeholder="اسم المنتج" value={name} onChange={e => setName(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
-                <input required type="number" step="0.01" placeholder="السعر ($)" value={price} onChange={e => setPrice(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
-                <label className="rounded-2xl border border-dashed border-white/15 bg-background/50 p-4 transition-colors hover:border-tertiary/60">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={e => handleImageUpload(e.target.files?.[0])}
-                    required={!image}
-                  />
-                  <span className="flex items-center justify-between gap-3 text-sm font-bold text-on-surface-variant">
-                    <span className="flex items-center gap-2">
-                      <Upload size={18} className="text-tertiary" />
-                      {imageFileName || (image ? 'تم اختيار صورة للمنتج' : 'رفع صورة المنتج من الجهاز')}
-                    </span>
-                    <span className="rounded-full bg-tertiary/15 px-3 py-1 text-xs text-tertiary">اختيار ملف</span>
-                  </span>
-                </label>
-                {image ? (
-                  <div className="overflow-hidden rounded-2xl border border-white/10 bg-background/50">
-                    <img src={image} alt="معاينة صورة المنتج" className="h-40 w-full object-cover" />
+                <input required type="number" step="0.01" placeholder="السعر بالدرهم الإماراتي" value={price} onChange={e => setPrice(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
+
+                <div className="rounded-[24px] border border-white/10 bg-background/40 p-3">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-sm font-black text-on-surface">صورة المنتج</p>
+                      <p className="mt-1 text-xs text-on-surface-variant">ارفع صورة واضحة من جهازك للمنتج.</p>
+                    </div>
+                    {image && (
+                      <button type="button" onClick={() => { setImage(''); setImageFileName(''); }} className="grid h-9 w-9 place-items-center rounded-2xl bg-white/8 text-on-surface-variant transition-colors hover:bg-error/15 hover:text-error" aria-label="إزالة الصورة">
+                        <X size={17} />
+                      </button>
+                    )}
                   </div>
-                ) : (
-                  <div className="flex h-32 items-center justify-center rounded-2xl border border-white/10 bg-background/40 text-on-surface-variant">
-                    <ImagePlus size={30} />
+
+                  <label className="group block cursor-pointer rounded-[22px] border border-dashed border-tertiary/35 bg-tertiary/5 p-4 text-center transition-all hover:border-tertiary hover:bg-tertiary/10">
+                    <input type="file" accept="image/*" className="hidden" onChange={e => handleImageUpload(e.target.files?.[0])} required={!image} />
+                    <span className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-tertiary/15 text-tertiary transition-transform group-hover:scale-105">
+                      <Upload size={22} />
+                    </span>
+                    <span className="block text-sm font-black text-on-surface">{imageFileName || 'اختر صورة من الجهاز'}</span>
+                    <span className="mt-1 block text-xs font-bold text-on-surface-variant">PNG أو JPG أو WEBP</span>
+                  </label>
+
+                  {image ? (
+                    <div className="mt-3 overflow-hidden rounded-[22px] border border-white/10 bg-background/50">
+                      <img src={image} alt="معاينة صورة المنتج" className="h-44 w-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className="mt-3 flex h-32 items-center justify-center rounded-[22px] border border-white/10 bg-background/40 text-on-surface-variant">
+                      <ImagePlus size={32} />
+                    </div>
+                  )}
+                </div>
+
+                {formMessage && (
+                  <div className={`rounded-2xl border px-4 py-3 text-sm font-bold ${
+                    formMessage.type === 'success'
+                      ? 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200'
+                      : 'border-error/30 bg-error/10 text-error'
+                  }`}>
+                    {formMessage.text}
                   </div>
                 )}
+
                 <input required type="text" placeholder="الفئة" value={category} onChange={e => setCategory(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
                 <input required type="text" placeholder="مخصص لـ" value={forPet} onChange={e => setForPet(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
                 <textarea required placeholder="الوصف" value={description} onChange={e => setDescription(e.target.value)} className="min-h-[100px] rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
                 <div className="flex gap-2">
-                  <Button type="submit" className="mt-2 flex-1">{editingProduct ? 'تحديث' : 'إضافة'}</Button>
-                  {editingProduct && <Button type="button" variant="secondary" className="mt-2 flex-1" onClick={handleCancelEdit}>إلغاء</Button>}
+                  <Button type="submit" disabled={isSaving} className="mt-2 flex-1">{isSaving ? 'جار الحفظ...' : editingProduct ? 'تحديث' : 'إضافة'}</Button>
+                  {editingProduct && <Button type="button" variant="secondary" className="mt-2 flex-1" onClick={handleCancelEdit} disabled={isSaving}>إلغاء</Button>}
                 </div>
               </form>
             </div>
@@ -223,7 +269,7 @@ export function Admin() {
                           <span className="font-bold">{p.name}</span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-black text-tertiary">${p.price.toFixed(2)}</td>
+                      <td className="px-6 py-4 font-black text-tertiary">{formatCurrency(p.price)}</td>
                       <td className="px-6 py-4 text-on-surface-variant">{p.category}</td>
                       <td className="px-6 py-4">
                         <div className="flex gap-2">
@@ -263,7 +309,7 @@ export function Admin() {
                     <p className="text-sm text-on-surface-variant">{o.user_email}</p>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="mb-1 font-black text-tertiary">${o.total.toFixed(2)}</p>
+                    <p className="mb-1 font-black text-tertiary">{formatCurrency(o.total)}</p>
                     <p className="text-sm">{o.items.length} عناصر</p>
                   </td>
                   <td className="px-6 py-4">

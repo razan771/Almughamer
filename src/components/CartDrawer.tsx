@@ -2,6 +2,7 @@ import React from 'react';
 import { Minus, Plus, Trash2, X } from 'lucide-react';
 import { Button } from './Button';
 import type { Product } from './ProductCard';
+import { formatCurrency } from '../utils/currency';
 
 interface CartItem extends Product {
   quantity: number;
@@ -49,7 +50,7 @@ export function CartDrawer({ isOpen, onClose, items, onRemoveItem, onUpdateQuant
                   <img src={item.image} alt={item.name} className="h-20 w-20 flex-shrink-0 rounded-2xl object-cover" />
                   <div className="min-w-0 flex-1">
                     <h4 className="line-clamp-2 font-display font-bold leading-6">{item.name}</h4>
-                    <p className="mt-1 font-display text-lg font-black text-tertiary">${item.price.toFixed(2)}</p>
+                    <p className="mt-1 font-display text-lg font-black text-tertiary">{formatCurrency(item.price)}</p>
                   </div>
                 </div>
                 <div className="mt-4 flex items-center justify-between">
@@ -75,7 +76,7 @@ export function CartDrawer({ isOpen, onClose, items, onRemoveItem, onUpdateQuant
           <div className="border-t border-white/10 bg-surface/80 p-6">
             <div className="mb-6 flex items-center justify-between">
               <span className="font-bold text-on-surface-variant">المجموع الفرعي</span>
-              <span className="font-display text-3xl font-black text-tertiary">${subtotal.toFixed(2)}</span>
+              <span className="font-display text-3xl font-black text-tertiary">{formatCurrency(subtotal)}</span>
             </div>
             <Button fullWidth variant="primary" className="py-4 text-lg" onClick={onCheckout}>
               إتمام الشراء

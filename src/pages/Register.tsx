@@ -20,8 +20,8 @@ export function Register() {
       } else {
         alert(res.message);
       }
-    } catch {
-      alert('تعذر الاتصال بالخادم');
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'تعذر الاتصال بالخادم');
     }
   };
 

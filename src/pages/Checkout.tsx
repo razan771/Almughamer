@@ -5,6 +5,7 @@ import { useAuth } from '../AuthContext';
 import { api } from '../api';
 import type { Product } from '../components/ProductCard';
 import { config } from '../config';
+import { formatCurrency } from '../utils/currency';
 
 interface CheckoutProps {
   items: (Product & { quantity: number })[];
@@ -43,8 +44,8 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
     }
 
     const message = `السلام عليكم، أريد طلباً من متجر المغامر الفضي:\n\nالمنتجات:\n` +
-      items.map(item => `- ${item.name} x ${item.quantity} = $${(item.price * item.quantity).toFixed(2)}`).join('\n') +
-      `\n\nالمجموع: $${total.toFixed(2)}\n\n` +
+      items.map(item => `- ${item.name} x ${item.quantity} = ${formatCurrency(item.price * item.quantity)}`).join('\n') +
+      `\n\nالمجموع: ${formatCurrency(total)}\n\n` +
       `الاسم: ${customerName}\n` +
       `رقم التواصل: ${customerPhone}\n` +
       `العنوان: ${customerAddress}`;
@@ -76,13 +77,13 @@ export function Checkout({ items, clearCart }: CheckoutProps) {
             {items.map(item => (
               <div key={item.id} className="flex items-center justify-between gap-4 rounded-2xl bg-white/[0.04] p-4">
                 <span className="text-sm font-bold md:text-base">{item.name} x {item.quantity}</span>
-                <span className="font-display font-black text-tertiary">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-display font-black text-tertiary">{formatCurrency(item.price * item.quantity)}</span>
               </div>
             ))}
           </div>
           <div className="mt-5 flex justify-between text-xl font-black">
             <span>الإجمالي</span>
-            <span className="text-tertiary">${total.toFixed(2)}</span>
+            <span className="text-tertiary">{formatCurrency(total)}</span>
           </div>
         </div>
 

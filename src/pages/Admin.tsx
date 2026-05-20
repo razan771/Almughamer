@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Edit2, Package, Trash2 } from 'lucide-react';
+import { CheckCircle, Edit2, ImagePlus, Package, Trash2, Upload } from 'lucide-react';
 import { api } from '../api';
 import type { Product } from '../components/ProductCard';
 import { Button } from '../components/Button';
@@ -34,6 +34,7 @@ export function Admin() {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [forPet, setForPet] = useState('');
+  const [imageFileName, setImageFileName] = useState('');
 
   const loadProducts = async () => setProducts(await api.getProducts());
   const loadOrders = async () => {
@@ -67,6 +68,7 @@ export function Admin() {
     setName('');
     setPrice('');
     setImage('');
+    setImageFileName('');
     setDescription('');
     setCategory('');
     setForPet('');
@@ -89,6 +91,7 @@ export function Admin() {
     setName(p.name);
     setPrice(String(p.price));
     setImage(p.image);
+    setImageFileName('');
     setDescription(p.description);
     setCategory(p.category);
     setForPet(p.forPet);
@@ -101,6 +104,23 @@ export function Admin() {
       await api.deleteProduct(id, token);
       loadProducts();
     }
+  };
+
+  const handleImageUpload = (file?: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('يرجى اختيار ملف صورة فقط');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setImage(reader.result);
+        setImageFileName(file.name);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleUpdateStatus = async (id: number, status: string) => {
@@ -147,7 +167,31 @@ export function Admin() {
               <form onSubmit={handleSubmitProduct} className="flex flex-col gap-4">
                 <input required type="text" placeholder="اسم المنتج" value={name} onChange={e => setName(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
                 <input required type="number" step="0.01" placeholder="السعر ($)" value={price} onChange={e => setPrice(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
-                <input required type="text" placeholder="رابط الصورة" value={image} onChange={e => setImage(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
+                <label className="rounded-2xl border border-dashed border-white/15 bg-background/50 p-4 transition-colors hover:border-tertiary/60">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={e => handleImageUpload(e.target.files?.[0])}
+                    required={!image}
+                  />
+                  <span className="flex items-center justify-between gap-3 text-sm font-bold text-on-surface-variant">
+                    <span className="flex items-center gap-2">
+                      <Upload size={18} className="text-tertiary" />
+                      {imageFileName || (image ? 'تم اختيار صورة للمنتج' : 'رفع صورة المنتج من الجهاز')}
+                    </span>
+                    <span className="rounded-full bg-tertiary/15 px-3 py-1 text-xs text-tertiary">اختيار ملف</span>
+                  </span>
+                </label>
+                {image ? (
+                  <div className="overflow-hidden rounded-2xl border border-white/10 bg-background/50">
+                    <img src={image} alt="معاينة صورة المنتج" className="h-40 w-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="flex h-32 items-center justify-center rounded-2xl border border-white/10 bg-background/40 text-on-surface-variant">
+                    <ImagePlus size={30} />
+                  </div>
+                )}
                 <input required type="text" placeholder="الفئة" value={category} onChange={e => setCategory(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
                 <input required type="text" placeholder="مخصص لـ" value={forPet} onChange={e => setForPet(e.target.value)} className="rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />
                 <textarea required placeholder="الوصف" value={description} onChange={e => setDescription(e.target.value)} className="min-h-[100px] rounded-2xl border border-white/10 bg-background/50 px-4 py-3 outline-none focus:border-tertiary" />

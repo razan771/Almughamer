@@ -19,7 +19,7 @@ export function Home() {
         <div className="text-center lg:text-start">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-tertiary/30 bg-tertiary/10 px-4 py-2 text-sm font-bold text-tertiary">
             <Sparkles size={16} />
-            صيدلية بيطرية احترافية باسم المغامر الفضي
+            صيدلية المغامر الفضي
           </div>
           <h1 className="text-balance font-display text-4xl font-black leading-[1.25] text-on-surface sm:text-5xl lg:text-7xl">
             رعاية بيطرية فاخرة

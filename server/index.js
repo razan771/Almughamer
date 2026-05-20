@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -52,7 +53,7 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const db = await getDb();
     const hash = await bcrypt.hash(password, 10);
-    await db.run('INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)', [name, email, hash]);
+    await db.run('INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3)', [name, email, hash]);
     res.json({ success: true });
   } catch (err) {
     if (err.message.includes('UNIQUE constraint')) {
@@ -66,7 +67,7 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   const db = await getDb();
-  const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
+  const user = await db.get('SELECT * FROM users WHERE email = $1', [email]);
 
   if (user) {
     const isMatch = await bcrypt.compare(password, user.password_hash);
@@ -90,7 +91,7 @@ app.post('/api/products', verifyAdmin, async (req, res) => {
   const { name, description, price, image, category, forPet } = req.body;
   const db = await getDb();
   const result = await db.run(
-    'INSERT INTO products (name, description, price, image, category, forPet) VALUES (?, ?, ?, ?, ?, ?)',
+    'INSERT INTO products (name, description, price, image, category, forPet) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
     [name, description, price, image, category, forPet]
   );
   res.json({ id: String(result.lastID) });
@@ -101,7 +102,7 @@ app.put('/api/products/:id', verifyAdmin, async (req, res) => {
   const { name, description, price, image, category, forPet } = req.body;
   const db = await getDb();
   await db.run(
-    'UPDATE products SET name = ?, description = ?, price = ?, image = ?, category = ?, forPet = ? WHERE id = ?',
+    'UPDATE products SET name = $1, description = $2, price = $3, image = $4, category = $5, forPet = $6 WHERE id = $7',
     [name, description, price, image, category, forPet, id]
   );
   res.json({ success: true });
@@ -110,14 +111,14 @@ app.put('/api/products/:id', verifyAdmin, async (req, res) => {
 app.delete('/api/products/:id', verifyAdmin, async (req, res) => {
   const { id } = req.params;
   const db = await getDb();
-  await db.run('DELETE FROM products WHERE id = ?', [id]);
+  await db.run('DELETE FROM products WHERE id = $1', [id]);
   res.json({ success: true });
 });
 
 // ----------------- User Orders API -----------------
 app.get('/api/user/orders', verifyToken, async (req, res) => {
   const db = await getDb();
-  const orders = await db.all('SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC', [req.user.id]);
+  const orders = await db.all('SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC', [req.user.id]);
   const parsedOrders = orders.map(o => ({ ...o, items: JSON.parse(o.items) }));
   res.json(parsedOrders);
 });
@@ -126,7 +127,7 @@ app.post('/api/orders', verifyToken, async (req, res) => {
   const { items, total, payment_method } = req.body;
   const db = await getDb();
   const result = await db.run(
-    'INSERT INTO orders (user_id, items, total, payment_method) VALUES (?, ?, ?, ?)',
+    'INSERT INTO orders (user_id, items, total, payment_method) VALUES ($1, $2, $3, $4) RETURNING id',
     [req.user.id, JSON.stringify(items), total, payment_method || 'whatsapp']
   );
   res.json({ id: result.lastID, success: true });
@@ -148,7 +149,7 @@ app.get('/api/admin/orders', verifyAdmin, async (req, res) => {
 app.put('/api/admin/orders/:id/status', verifyAdmin, async (req, res) => {
   const { status } = req.body;
   const db = await getDb();
-  await db.run('UPDATE orders SET status = ? WHERE id = ?', [status, req.params.id]);
+  await db.run('UPDATE orders SET status = $1 WHERE id = $2', [status, req.params.id]);
   res.json({ success: true });
 });
 
